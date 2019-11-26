@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>Final Project Canvas</title>
+  <style>
+
+  	canvas{
+  		background-color: #99D0F2; 
+  		border: 2px solid black;
+  		display: block;
+  	}
+  </style>
+
+<head>
+	<body>
+		  <canvas id = "myCanvas" width = "350" height = "500"></canvas>
+	
+	<script>
+		var canvas = document.getElementById("myCanvas");
+		var ctx = canvas.getContext("2d");
+		canvas.width = 500;
+		canvas.height = 300;
+		var radius = 15;
+		var x = canvas.width/2;
+		var y = canvas.height-30;
+		var dx = 2;
+		var dy = -2;
+		var paddleHeight = 20;
+		var paddleWidth = 200; 
+		var paddleX = (canvas.width-paddleWidth)/2; 
+
+		function getRandomColor() {
+    		var letters = '0123456789ABCDEF'.split('');
+    		var color = '#';
+    		for (var i = 0; i < 6; i++ ) {
+        		color += letters[Math.floor(Math.random() * 16)];
+    		}
+    		return color;
+    	}
+
+		function drawCircle(){
+			ctx.beginPath();
+			ctx.arc(x, y, radius, 0, Math.PI * 2);
+			ctx.fillStyle = getRandomColor();
+			ctx.fill();
+			ctx.closePath();
+
+		}
+
+		function drawPaddle(){
+			ctx.beginPath();
+			ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+			ctx.fillStyle = 'gray';
+			ctx.fill();
+			ctx.closePath()
+		}
+
+		function startGame(){
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			drawCircle();
+			drawPaddle();
+
+			if(x + dx > canvas.width-radius || x + dx < radius){
+				dx = -dx;
+			}
+			if(y + dy > canvas.height-radius || y + dy < radius){
+				dy = -dy; 
+			}	
+
+			x += dx;
+			y += dy;
+		}
+
+
+
+		setInterval(startGame, 10);
+
+		
+
+	
+	
+	
+	</script>
+	<div style="text-align: left;" > 
+		<button onclick="left()">LEFT</button>
+		<button onclick="right()">RIGHT</button>
+	</div>
+
+</body>
+</head>
+
