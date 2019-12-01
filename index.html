@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>Final Project Canvas</title>
+  <style>
+
+  	canvas{
+  		background-color: #99D0F2; 
+  		border: 2px solid black;
+  		display: block;
+  	}
+  </style>
+
+<head>
+	<body>
+		  <canvas id = "myCanvas" width = "350" height = "500"></canvas>
+		  <img id="figure" src="images/figure.jpg" alt="The Figure" width="45" height="45" display = "none">
+	
+	<script>
+		var canvas = document.getElementById("myCanvas");
+		var ctx = canvas.getContext("2d");
+		canvas.width = 500;
+		canvas.height = 300;
+		var radius = 15;
+		var x = canvas.width/2;
+		var y = canvas.height-30;
+		var dx = 2;
+		var dy = -2;
+		var xPos = 10;
+		var yPos = 15; 
+		var img = document.getElementById("figure");
+
+		function press (event){
+			if (event.keyCode == 37){
+				xPos -=10; 
+			} else if (event.keyCode == 38){
+				yPos -=10;
+			} else if (event.keyCode == 39){
+				xPos +=10;
+			} else if (event.keyCode == 40){
+				yPos +=10; 
+			}
+		}
+
+
+
+		function getRandomColor() {
+    		var letters = '0123456789ABCDEF'.split('');
+    		var color = '#';
+    		for (var i = 0; i < 6; i++ ) {
+        		color += letters[Math.floor(Math.random() * 16)];
+    		}
+    		return color;
+    	}
+
+		function drawCircle(){
+			ctx.beginPath();
+			ctx.arc(x, y, radius, 0, Math.PI * 2);
+			ctx.fillStyle = getRandomColor();
+			ctx.fill();
+			ctx.closePath();
+		}
+		function crashWith(){
+	        var myleft = xPos;
+	        var myright = xPos + (img.width);
+	        var mytop = yPos;
+	        var mybottom = yPos + (img.height);
+	        var otherleft = x;
+	        var otherright = x + radius;
+	        var othertop = y;
+	        var otherbottom = y + radius; 
+	        var crash = true;
+		    if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+			    crash = false;
+		    }
+		    return crash;
+    }
+
+	
+
+		function startGame(){
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			drawCircle();
+			ctx.drawImage(img, xPos, yPos, img.width, img.height); //
+			window.addEventListener("keydown", press);
+			
+			
+
+			if(x + dx > canvas.width-radius || x + dx < radius){
+				dx = -dx;
+			}
+			if(y + dy > canvas.height-radius || y + dy < radius){
+				dy = -dy; 
+			} 
+			
+			x += dx;
+			y += dy;
+			if (crashWith()) {
+				console.log('same place')
+				// alert("GAME OVER");
+    			document.location.reload();
+   				clearInterval(interval);
+			}
+
+
+		}
+
+
+		
+		var interval = setInterval(startGame, 20);
+
+
+
+	
+	</script>
+
+</body>
+</head>
+
+
+
+
